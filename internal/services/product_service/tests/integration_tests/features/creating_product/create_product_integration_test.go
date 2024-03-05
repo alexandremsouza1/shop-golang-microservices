@@ -2,6 +2,8 @@ package creating_product
 
 import (
 	"context"
+	"testing"
+
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/mehdihadeli/go-mediatr"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/logger"
@@ -13,11 +15,10 @@ import (
 	creatingproducteventsv1 "github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/product/features/creating_product/v1/events"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/shared/delivery"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/shared/test_fixture"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/stretchr/testify/assert"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/fx"
-	"testing"
 )
 
 type createProductIntegrationTests struct {

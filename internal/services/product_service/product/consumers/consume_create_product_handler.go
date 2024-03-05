@@ -2,8 +2,8 @@ package consumers
 
 import (
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/shared/delivery"
+	amqp "github.com/rabbitmq/amqp091-go"
 	log "github.com/sirupsen/logrus"
-	"github.com/streadway/amqp"
 )
 
 func HandleConsumeCreateProduct(queue string, msg amqp.Delivery, productDeliveryBase *delivery.ProductDeliveryBase) error {

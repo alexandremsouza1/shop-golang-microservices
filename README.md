@@ -25,7 +25,7 @@ The main idea of creating this project is implementing an infrastructure for up 
 ## The Goals of This Project
 
 - :sparkle: Using `Vertical Slice Architecture` for `architecture level`.
-- :sparkle: Using `Rabbitmq` for `Event Driven Architecture` between our microservices with `streadway/amqp` library.
+- :sparkle: Using `Rabbitmq` for `Event Driven Architecture` between our microservices with `rabbitmq/amqp091-go` library.
 - :sparkle: Using `gRPC` for `internal communication` between our microservices with `grpc/grpc-go` library.
 - :sparkle: Using `CQRS` implementation with `mehdihadeli/Go-MediatR` library.
 - :sparkle: Using `Postgres` for `database` in our microservices with `go-gorm/gorm` library.
@@ -56,7 +56,7 @@ I will try to register future goals and additions in the [Issues](https://github
 - ✔️ **[`labstack/echo`](https://github.com/labstack/echo)** - High performance, minimalist Go web framework
 - ✔️ **[`go-gorm/gorm`](https://github.com/go-gorm/gorm)** - The fantastic ORM library for Go, aims to be developer friendly
 - ✔️ **[`sirupsen/logrus`](https://github.com/sirupsen/logrus)** - Logrus is a structured logger for Go
-- ✔️ **[`streadway/amqp`](https://github.com/streadway/amqp)** - Go RabbitMQ Client Library
+- ✔️ **[`rabbitmq/amqp091-go`](https://github.com/rabbitmq/amqp091-go)** - Go RabbitMQ Client Library
 - ✔️ **[`spf13/viper`](https://github.com/spf13/viper)** - Go configuration with fangs
 - ✔️ **[`swaggo/echo-swagger`](https://github.com/swaggo/echo-swagger)** - Echo middleware to automatically generate RESTful API documentation
 - ✔️ **[`mehdihadeli/Go-MediatR`](https://github.com/mehdihadeli/Go-MediatR)** - This package is a Mediator Pattern implementation in Go

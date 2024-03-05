@@ -3,18 +3,19 @@ package rabbitmq
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"runtime"
+	"strings"
+	"time"
+
 	"github.com/ahmetb/go-linq/v3"
 	"github.com/iancoleman/strcase"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/logger"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/otel"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-	"reflect"
-	"runtime"
-	"strings"
-	"time"
 )
 
 //go:generate mockery --name IConsumer
@@ -104,64 +105,56 @@ func (c Consumer[T]) ConsumeMessage(msg interface{}, dependencies T) error {
 	}
 
 	go func() {
+    for {
+        select {
+        case <-c.ctx.Done():
+            c.log.Infof("Context canceled. Terminating the goroutine for the queue: %s", q.Name)
+            return
 
-		select {
-		case <-c.ctx.Done():
-			defer func(ch *amqp.Channel) {
-				err := ch.Close()
-				if err != nil {
-					c.log.Errorf("failed to close channel closed for for queue: %s", q.Name)
-				}
-			}(ch)
-			c.log.Infof("channel closed for for queue: %s", q.Name)
-			return
+        case delivery, ok := <-deliveries:
+            if !ok {
+                c.log.Errorf("Delivery channel closed to the queue: %s", q.Name)
+                return
+            }
 
-		case delivery, ok := <-deliveries:
-			{
-				if !ok {
-					c.log.Errorf("NOT OK deliveries channel closed for queue: %s", q.Name)
-					return
-				}
+          	// Extract headers
+					 c.ctx = otel.ExtractAMQPHeaders(c.ctx, delivery.Headers)
 
-				// Extract headers
-				c.ctx = otel.ExtractAMQPHeaders(c.ctx, delivery.Headers)
+            err := c.handler(q.Name, delivery, dependencies)
+            if err != nil {
+                c.log.Error(err.Error())
+            }
 
-				err := c.handler(q.Name, delivery, dependencies)
-				if err != nil {
-					c.log.Error(err.Error())
-				}
+						consumedMessages = append(consumedMessages, snakeTypeName)
 
-				consumedMessages = append(consumedMessages, snakeTypeName)
-
-				_, span := c.jaegerTracer.Start(c.ctx, consumerHandlerName)
-
-				h, err := jsoniter.Marshal(delivery.Headers)
-
-				if err != nil {
-					c.log.Errorf("Error in marshalling headers in consumer: %v", string(h))
-				}
-
-				span.SetAttributes(attribute.Key("message-id").String(delivery.MessageId))
-				span.SetAttributes(attribute.Key("correlation-id").String(delivery.CorrelationId))
-				span.SetAttributes(attribute.Key("queue").String(q.Name))
-				span.SetAttributes(attribute.Key("exchange").String(delivery.Exchange))
-				span.SetAttributes(attribute.Key("routing-key").String(delivery.RoutingKey))
-				span.SetAttributes(attribute.Key("ack").Bool(true))
-				span.SetAttributes(attribute.Key("timestamp").String(delivery.Timestamp.String()))
-				span.SetAttributes(attribute.Key("body").String(string(delivery.Body)))
-				span.SetAttributes(attribute.Key("headers").String(string(h)))
-
-				// Cannot use defer inside a for loop
-				time.Sleep(1 * time.Millisecond)
-				span.End()
-
-				err = delivery.Ack(false)
-				if err != nil {
-					c.log.Errorf("We didn't get a ack for delivery: %v", string(delivery.Body))
-				}
-			}
-		}
-	}()
+						_, span := c.jaegerTracer.Start(c.ctx, consumerHandlerName)
+		
+						h, err := jsoniter.Marshal(delivery.Headers)
+		
+						if err != nil {
+							c.log.Errorf("Error in marshalling headers in consumer: %v", string(h))
+						}
+		
+						span.SetAttributes(attribute.Key("message-id").String(delivery.MessageId))
+						span.SetAttributes(attribute.Key("correlation-id").String(delivery.CorrelationId))
+						span.SetAttributes(attribute.Key("queue").String(q.Name))
+						span.SetAttributes(attribute.Key("exchange").String(delivery.Exchange))
+						span.SetAttributes(attribute.Key("routing-key").String(delivery.RoutingKey))
+						span.SetAttributes(attribute.Key("ack").Bool(true))
+						span.SetAttributes(attribute.Key("timestamp").String(delivery.Timestamp.String()))
+						span.SetAttributes(attribute.Key("body").String(string(delivery.Body)))
+						span.SetAttributes(attribute.Key("headers").String(string(h)))
+		
+						// Cannot use defer inside a for loop
+						time.Sleep(1 * time.Millisecond)
+						span.End()
+            err = delivery.Ack(false)
+            if err != nil {
+                c.log.Errorf("Error sending Ack to message: %v", string(delivery.Body))
+            }
+        }
+    }
+}()
 
 	c.log.Infof("Waiting for messages in queue :%s. To exit press CTRL+C", q.Name)
 

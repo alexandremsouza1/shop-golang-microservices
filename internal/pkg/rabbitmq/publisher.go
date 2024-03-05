@@ -2,18 +2,19 @@ package rabbitmq
 
 import (
 	"context"
+	"reflect"
+	"time"
+
 	"github.com/ahmetb/go-linq/v3"
 	"github.com/iancoleman/strcase"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/labstack/echo/v4"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/logger"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/otel"
+	amqp "github.com/rabbitmq/amqp091-go"
 	uuid "github.com/satori/go.uuid"
-	"github.com/streadway/amqp"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-	"reflect"
-	"time"
 )
 
 //go:generate mockery --name IPublisher

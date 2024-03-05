@@ -2,6 +2,7 @@ package configurations
 
 import (
 	"context"
+
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/logger"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/rabbitmq"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/inventory_service/config"
@@ -9,7 +10,7 @@ import (
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/inventory_service/inventory/consumers/handlers"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/inventory_service/inventory/data/contracts"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/inventory_service/shared/delivery"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"go.opentelemetry.io/otel/trace"
 )
 

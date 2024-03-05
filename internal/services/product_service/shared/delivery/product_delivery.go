@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"context"
+
 	"github.com/go-resty/resty/v2"
 	"github.com/labstack/echo/v4"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/grpc"
@@ -9,7 +10,7 @@ import (
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/rabbitmq"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/config"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/product/data/contracts"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"go.opentelemetry.io/otel/trace"
 	"gorm.io/gorm"
 )

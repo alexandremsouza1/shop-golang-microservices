@@ -12,10 +12,10 @@ require (
 	github.com/meysamhadeli/problem-details v1.2.4
 	github.com/meysamhadeli/shop-golang-microservices/internal/pkg v0.0.0-00010101000000-000000000000
 	github.com/pkg/errors v0.9.1
+	github.com/rabbitmq/amqp091-go v1.9.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.14.0
-	github.com/streadway/amqp v1.0.0
 	github.com/swaggo/echo-swagger v1.3.5
 	go.opentelemetry.io/otel/trace v1.17.0
 	go.uber.org/fx v1.18.2

@@ -3,10 +3,11 @@ package rabbitmq
 import (
 	"context"
 	"fmt"
-	"github.com/cenkalti/backoff/v4"
-	log "github.com/sirupsen/logrus"
-	"github.com/streadway/amqp"
 	"time"
+
+	"github.com/cenkalti/backoff/v4"
+	amqp "github.com/rabbitmq/amqp091-go"
+	log "github.com/sirupsen/logrus"
 )
 
 type RabbitMQConfig struct {

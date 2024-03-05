@@ -2,6 +2,9 @@ package test_fixture
 
 import (
 	"context"
+	"os"
+	"testing"
+
 	"github.com/go-playground/validator"
 	"github.com/go-resty/resty/v2"
 	"github.com/labstack/echo/v4"
@@ -23,14 +26,12 @@ import (
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/product/mappings"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/product/models"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/services/product_service/shared/delivery"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxtest"
 	"gorm.io/gorm"
-	"os"
-	"testing"
 )
 
 type IntegrationTestFixture struct {

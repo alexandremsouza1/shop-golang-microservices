@@ -3,16 +3,17 @@ package rabbitmqcontainer
 import (
 	"context"
 	"fmt"
+	"testing"
+	"time"
+
 	"github.com/cenkalti/backoff/v4"
 	"github.com/docker/go-connections/nat"
 	"github.com/meysamhadeli/shop-golang-microservices/internal/pkg/rabbitmq"
 	"github.com/pkg/errors"
+	amqp "github.com/rabbitmq/amqp091-go"
 	log "github.com/sirupsen/logrus"
-	"github.com/streadway/amqp"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	"testing"
-	"time"
 )
 
 type RabbitMQContainerOptions struct {

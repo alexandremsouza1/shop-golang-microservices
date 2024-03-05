@@ -44,8 +44,8 @@ Content-Type: application/json
 authorization: Bearer {{Token.response.body.access_token}}
 
 {
-  "description": "Nome do produto 38",
-  "name": "Nome do produto 38",
+  "description": "Nome do produto 11",
+  "name": "Nome do produto 11",
   "price": 1,
   "inventoryId": 1,
   "count": 1
