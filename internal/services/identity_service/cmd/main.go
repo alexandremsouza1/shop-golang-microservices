@@ -49,6 +49,7 @@ func main() {
 			}),
 			fx.Invoke(mappings.ConfigureMappings),
 			fx.Invoke(configurations.ConfigEndpoints),
+			fx.Invoke(configurations.ConfigIdentityGrpcServer),
 			fx.Invoke(configurations.ConfigUsersMediator),
 			fx.Invoke(oauth2.RunOauthServer),
 		),

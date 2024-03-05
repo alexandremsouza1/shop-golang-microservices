@@ -30,7 +30,10 @@ accept: application/json
 
 ###
 # @name ApiRoot_Product
-GET {{product-api}}
+GET {{product-api}}/api/v1/products
+accept: application/json
+Content-Type: application/json
+authorization: Bearer {{Token.response.body.access_token}}
 ###
 
 ###
@@ -41,9 +44,11 @@ Content-Type: application/json
 authorization: Bearer {{Token.response.body.access_token}}
 
 {
-  "description": "test-desc",
-  "name": "test-product",
-  "price": 20
+  "description": "Nome do produto 38",
+  "name": "Nome do produto 38",
+  "price": 1,
+  "inventoryId": 1,
+  "count": 1
 }
 ###
 
