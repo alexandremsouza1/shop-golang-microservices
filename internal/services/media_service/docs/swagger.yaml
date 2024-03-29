@@ -1,0 +1,253 @@
+definitions:
+  dtos.CreateMediaRequestDto:
+    properties:
+      count:
+        type: integer
+      description:
+        type: string
+      inventoryId:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  dtos.CreateMediaResponseDto:
+    properties:
+      productId:
+        type: string
+    type: object
+  dtos.GetMediaByIdResponseDto:
+    properties:
+      media:
+        $ref: '#/definitions/dtos.MediaDto'
+    type: object
+  dtos.GetMediasResponseDto:
+    properties:
+      products:
+        $ref: '#/definitions/utils.ListResult-dtos_MediaDto'
+    type: object
+  dtos.MediaDto:
+    properties:
+      count:
+        type: integer
+      createdAt:
+        type: string
+      description:
+        type: string
+      inventoryId:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      productId:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  dtos.SearchMediasResponseDto:
+    properties:
+      products:
+        $ref: '#/definitions/utils.ListResult-dtos_MediaDto'
+    type: object
+  dtos.UpdateMediaRequestDto:
+    properties:
+      count:
+        type: integer
+      description:
+        type: string
+      inventoryId:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+    required:
+    - count
+    - inventoryId
+    - name
+    - price
+    type: object
+  utils.FilterModel:
+    properties:
+      comparison:
+        type: string
+      field:
+        type: string
+      value:
+        type: string
+    type: object
+  utils.ListResult-dtos_MediaDto:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dtos.MediaDto'
+        type: array
+      page:
+        type: integer
+      size:
+        type: integer
+      totalItems:
+        type: integer
+      totalPage:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/products:
+    get:
+      consumes:
+      - application/json
+      description: Get all products
+      parameters:
+      - in: query
+        name: orderBy
+        type: string
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.GetMediasResponseDto'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all media
+      tags:
+      - Medias
+    post:
+      consumes:
+      - application/json
+      description: Create new media item
+      parameters:
+      - description: Media data
+        in: body
+        name: CreateMediaRequestDto
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateMediaRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.CreateMediaResponseDto'
+      security:
+      - ApiKeyAuth: []
+      summary: Create media
+      tags:
+      - Medias
+  /api/v1/products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete existing media
+      parameters:
+      - description: Media ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - ApiKeyAuth: []
+      summary: Delete media
+      tags:
+      - Medias
+    get:
+      consumes:
+      - application/json
+      description: Get media by id
+      parameters:
+      - description: Media ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.GetMediaByIdResponseDto'
+      security:
+      - ApiKeyAuth: []
+      summary: Get media
+      tags:
+      - Medias
+    put:
+      consumes:
+      - application/json
+      description: Update existing media
+      parameters:
+      - description: Media data
+        in: body
+        name: UpdateMediaRequestDto
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateMediaRequestDto'
+      - description: Media ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - ApiKeyAuth: []
+      summary: Update media
+      tags:
+      - Medias
+  /api/v1/products/search:
+    get:
+      consumes:
+      - application/json
+      description: Search products
+      parameters:
+      - in: query
+        name: orderBy
+        type: string
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: search
+        type: string
+      - in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SearchMediasResponseDto'
+      security:
+      - ApiKeyAuth: []
+      summary: Search products
+      tags:
+      - Medias
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
