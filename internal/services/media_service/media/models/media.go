@@ -17,6 +17,10 @@ type Media struct {
 	FilePath      string      `json:"filePath"`      // Caminho do arquivo (caminho relativo ou URL)
 	Thumbnail     string      `json:"thumbnail"`     // Caminho para a miniatura do arquivo de mídia
 	Permissions   []string    `json:"permissions"`   // Lista de permissões associadas ao arquivo de mídia
+	IsPublic      bool        `json:"isPublic"`      // Indica se o arquivo de mídia é público
+	IsCompressed  bool        `json:"isCompressed"`  // Indica se o arquivo de mídia está compactado
+	Expiration    time.Time   `json:"expiration"`    // Data de expiração do arquivo
 	CreatedAt     time.Time   `json:"createdAt"`     // Data de criação do arquivo
 	UpdatedAt     time.Time   `json:"updatedAt"`     // Data da última atualização do arquivo
+	DeletedAt     *time.Time  `json:"deletedAt"`     // Data de exclusão do arquivo
 }
